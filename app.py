@@ -37,21 +37,21 @@ st.markdown("""
 .main-title {
     font-size: 38px;
     font-weight: 800;
-    color: #17365d;
+    color: #17365d !important;
     margin-bottom: 5px;
 }
 
 /* Subtitle */
 .subtitle {
     font-size: 17px;
-    color: #64748b;
+    color: #64748b !important;
     margin-bottom: 5px;
 }
 
 /* Developed by */
 .developed-by {
     font-size: 15px;
-    color: #64748b;
+    color: #64748b !important;
     margin-bottom: 30px;
 }
 
@@ -59,7 +59,7 @@ st.markdown("""
 .section-title {
     font-size: 25px;
     font-weight: 750;
-    color: #17365d;
+    color: #17365d !important;
     margin-bottom: 18px;
 }
 
@@ -74,11 +74,26 @@ label {
     font-weight: 600 !important;
 }
 
+/* Normal Streamlit text */
+.stMarkdown p,
+.stMarkdown span,
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stMarkdownContainer"] span {
+    color: #17365d !important;
+}
+
+/* Result title */
+.result-title {
+    color: #17365d !important;
+    font-size: 18px;
+    font-weight: 800;
+}
+
 /* Button */
 div.stButton > button {
     width: 100%;
     background: linear-gradient(90deg, #4f46e5, #6366f1);
-    color: white;
+    color: white !important;
     font-size: 17px;
     font-weight: 700;
     border-radius: 12px;
@@ -86,17 +101,10 @@ div.stButton > button {
     padding: 12px;
 }
 
-/* Result headings */
-.result-title {
-    color: #17365d;
-    font-size: 18px;
-    font-weight: 800;
-}
-
 /* Footer */
 .footer {
     text-align: center;
-    color: #64748b;
+    color: #64748b !important;
     font-size: 15px;
     margin-top: 45px;
     padding: 20px;
@@ -151,14 +159,12 @@ with left:
     col1, col2 = st.columns(2)
 
     with col1:
-
         senior_citizen = st.selectbox(
             "Senior Citizen",
             ["No", "Yes"]
         )
 
     with col2:
-
         gender = st.selectbox(
             "Gender",
             ["Male", "Female"]
@@ -172,7 +178,6 @@ with left:
     col1, col2 = st.columns(2)
 
     with col1:
-
         tenure = st.number_input(
             "Tenure (months)",
             min_value=0,
@@ -181,7 +186,6 @@ with left:
         )
 
     with col2:
-
         total_charges = st.number_input(
             "Total Charges ($)",
             min_value=0.0,
@@ -197,14 +201,12 @@ with left:
     col1, col2 = st.columns(2)
 
     with col1:
-
         partner = st.selectbox(
             "Partner",
             ["Yes", "No"]
         )
 
     with col2:
-
         dependents = st.selectbox(
             "Dependents",
             ["Yes", "No"]
@@ -218,14 +220,12 @@ with left:
     col1, col2 = st.columns(2)
 
     with col1:
-
         phone_service = st.selectbox(
             "Phone Service",
             ["Yes", "No"]
         )
 
     with col2:
-
         paperless_billing = st.selectbox(
             "Paperless Billing",
             ["Yes", "No"]
@@ -239,14 +239,12 @@ with left:
     col1, col2 = st.columns(2)
 
     with col1:
-
         streaming_tv = st.selectbox(
             "Streaming TV",
             ["Yes", "No"]
         )
 
     with col2:
-
         streaming_movies = st.selectbox(
             "Streaming Movies",
             ["Yes", "No"]
@@ -362,7 +360,7 @@ with right:
 
 
         # =================================================
-        # LOGISTIC REGRESSION
+        # LOGISTIC REGRESSION - CHURN
         # =================================================
 
         churn_prediction = logistic_model.predict(
@@ -401,19 +399,30 @@ with right:
                 )
 
 
-            st.write(
-                f"Probability of Staying: "
-                f"**{churn_probability[0][0]:.2%}**"
+            # Probability of staying
+            st.markdown(
+                f'<p style="color:#17365d !important; '
+                f'font-size:16px;">'
+                f'Probability of Staying: '
+                f'<b>{churn_probability[0][0]:.2%}</b>'
+                f'</p>',
+                unsafe_allow_html=True
             )
 
-            st.write(
-                f"Probability of Churning: "
-                f"**{churn_probability[0][1]:.2%}**"
+
+            # Probability of churning
+            st.markdown(
+                f'<p style="color:#17365d !important; '
+                f'font-size:16px;">'
+                f'Probability of Churning: '
+                f'<b>{churn_probability[0][1]:.2%}</b>'
+                f'</p>',
+                unsafe_allow_html=True
             )
 
 
         # =================================================
-        # LINEAR REGRESSION
+        # LINEAR REGRESSION - MONTHLY CHARGES
         # =================================================
 
         monthly_charges = linear_model.predict(
@@ -435,12 +444,20 @@ with right:
             )
 
             st.markdown(
-                f"# ${monthly_charges:.2f}"
+                f'<h1 style="color:#17365d !important; '
+                f'font-size:40px;">'
+                f'${monthly_charges:.2f}'
+                f'</h1>',
+                unsafe_allow_html=True
             )
 
-            st.write(
-                "Estimated monthly charges based on "
-                "customer characteristics."
+            st.markdown(
+                '<p style="color:#17365d !important; '
+                'font-size:16px;">'
+                'Estimated monthly charges based on '
+                'customer characteristics.'
+                '</p>',
+                unsafe_allow_html=True
             )
 
 
@@ -449,6 +466,8 @@ with right:
 # =========================================================
 
 st.markdown(
-    '<div class="footer"><b>Developed by Group 10</b></div>',
+    '<div class="footer">'
+    '<b>Developed by Group 10</b>'
+    '</div>',
     unsafe_allow_html=True
 )
