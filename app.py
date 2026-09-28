@@ -256,6 +256,18 @@ div.stButton > button {
     padding: 20px;
 }
 
+.footer a {
+    color: #64748b !important;
+    text-decoration: none !important;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.footer a:hover {
+    color: #17365d !important;
+    text-decoration: underline !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -725,7 +737,6 @@ if input_method == "Manual Input":
                 "**Analyze Customer** to view predictions."
             )
 
-
         else:
 
             # =================================================
@@ -969,7 +980,6 @@ His total charges so far are $1500."""
                 "and generate predictions."
             )
 
-
         else:
 
             if customer_text.strip() == "":
@@ -1017,7 +1027,10 @@ His total charges so far are $1500."""
                         )
 
                         for field in missing_fields:
-                            st.write(f"• {field}")
+
+                            st.write(
+                                f"• {field}"
+                            )
 
 
                     else:
@@ -1033,11 +1046,13 @@ His total charges so far are $1500."""
                             unsafe_allow_html=True
                         )
 
+
                         display_data = pd.DataFrame(
                             [customer_data]
                         ).T
 
                         display_data.columns = ["Value"]
+
 
                         st.dataframe(
                             display_data,
@@ -1171,6 +1186,7 @@ His total charges so far are $1500."""
                                 unsafe_allow_html=True
                             )
 
+
                             st.markdown(
                                 f"""
                                 <div class="charge-value">
@@ -1179,6 +1195,7 @@ His total charges so far are $1500."""
                                 """,
                                 unsafe_allow_html=True
                             )
+
 
                             st.markdown(
                                 '<div class="charge-description">'
@@ -1206,8 +1223,36 @@ His total charges so far are $1500."""
 # =========================================================
 
 st.markdown(
-    '<div class="footer">'
-    '<b>Developed by Group 10</b>'
-    '</div>',
+    """
+    <div class="footer">
+
+        <a
+            href="data:text/html;charset=utf-8,
+            <html>
+            <head>
+                <title>AI Natural Language Example</title>
+            </head>
+
+            <body style='font-family:Arial; padding:40px; font-size:18px; line-height:1.6;'>
+
+                <p>
+                The customer is a male and is not a senior citizen.<br>
+                He has been with the company for 1 month.<br>
+                He does not have a partner or dependents.<br>
+                He does not have phone service.<br>
+                He uses paperless billing.<br>
+                He uses streaming TV and streaming movies.<br>
+                His total charges so far are $29.85.
+                </p>
+
+            </body>
+            </html>"
+            target="_blank"
+        >
+            <b>Developed by Group 10</b>
+        </a>
+
+    </div>
+    """,
     unsafe_allow_html=True
 )
