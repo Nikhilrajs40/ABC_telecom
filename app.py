@@ -2,18 +2,29 @@ import streamlit as st
 import joblib
 import pandas as pd
 
-# Load models
-linear_model = joblib.load('linear.sav')
-logistic_model = joblib.load('logi.sav')
+# =========================================================
+# LOAD MODELS
+# =========================================================
 
-# ---------------- PAGE CONFIG ----------------
+linear_model = joblib.load("linear.sav")
+logistic_model = joblib.load("logi.sav")
+
+
+# =========================================================
+# PAGE CONFIGURATION
+# =========================================================
+
 st.set_page_config(
     page_title="ABC Ltd Telecom Decision Support",
     page_icon="📡",
     layout="wide"
 )
 
-# ---------------- CUSTOM CSS ----------------
+
+# =========================================================
+# CUSTOM CSS
+# =========================================================
+
 st.markdown("""
 <style>
 
@@ -21,6 +32,7 @@ st.markdown("""
     background-color: #f5f7fb;
 }
 
+/* Main title */
 .main-title {
     font-size: 38px;
     font-weight: 800;
@@ -28,12 +40,14 @@ st.markdown("""
     margin-bottom: 5px;
 }
 
+/* Subtitle */
 .subtitle {
     font-size: 17px;
     color: #64748b;
     margin-bottom: 30px;
 }
 
+/* Section headings */
 .section-title {
     font-size: 25px;
     font-weight: 750;
@@ -41,6 +55,18 @@ st.markdown("""
     margin-bottom: 18px;
 }
 
+/* Make input labels clearly visible */
+label {
+    color: #17365d !important;
+    font-weight: 600 !important;
+}
+
+[data-testid="stWidgetLabel"] p {
+    color: #17365d !important;
+    font-weight: 600 !important;
+}
+
+/* Result cards */
 .result-card {
     background-color: white;
     padding: 28px;
@@ -49,6 +75,7 @@ st.markdown("""
     margin-bottom: 20px;
 }
 
+/* Small heading inside result card */
 .result-heading {
     font-size: 14px;
     font-weight: 700;
@@ -57,38 +84,35 @@ st.markdown("""
     margin-bottom: 12px;
 }
 
+/* Stay result */
 .stay-text {
     color: #008a4b;
     font-size: 25px;
     font-weight: 800;
 }
 
+/* Churn result */
 .churn-text {
     color: #d93025;
     font-size: 25px;
     font-weight: 800;
 }
 
+/* Monthly charges */
 .charge-value {
     color: #17365d;
     font-size: 36px;
     font-weight: 800;
 }
 
+/* Probability text */
 .probability {
     font-size: 16px;
     color: #64748b;
     margin-top: 12px;
 }
 
-.footer {
-    text-align: center;
-    color: #64748b;
-    font-size: 15px;
-    margin-top: 45px;
-    padding: 20px;
-}
-
+/* Button */
 div.stButton > button {
     width: 100%;
     background: linear-gradient(90deg, #4f46e5, #6366f1);
@@ -100,11 +124,23 @@ div.stButton > button {
     padding: 12px;
 }
 
+/* Footer */
+.footer {
+    text-align: center;
+    color: #64748b;
+    font-size: 15px;
+    margin-top: 45px;
+    padding: 20px;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
 
-# ---------------- HEADER ----------------
+# =========================================================
+# HEADER
+# =========================================================
+
 st.markdown(
     '<div class="main-title">📡 ABC Ltd Telecom Decision Support</div>',
     unsafe_allow_html=True
@@ -116,7 +152,10 @@ st.markdown(
 )
 
 
-# ---------------- TWO COLUMNS ----------------
+# =========================================================
+# TWO COLUMN LAYOUT
+# =========================================================
+
 left, right = st.columns([1, 1], gap="large")
 
 
@@ -131,12 +170,13 @@ with left:
         unsafe_allow_html=True
     )
 
+    # Row 1
     col1, col2 = st.columns(2)
 
     with col1:
         senior_citizen = st.selectbox(
             "Senior Citizen",
-            [0, 1]
+            ["No", "Yes"]
         )
 
     with col2:
@@ -145,6 +185,7 @@ with left:
             ["Male", "Female"]
         )
 
+    # Row 2
     col1, col2 = st.columns(2)
 
     with col1:
@@ -163,6 +204,7 @@ with left:
             step=100.0
         )
 
+    # Row 3
     col1, col2 = st.columns(2)
 
     with col1:
@@ -177,6 +219,7 @@ with left:
             ["Yes", "No"]
         )
 
+    # Row 4
     col1, col2 = st.columns(2)
 
     with col1:
@@ -191,6 +234,7 @@ with left:
             ["Yes", "No"]
         )
 
+    # Row 5
     col1, col2 = st.columns(2)
 
     with col1:
@@ -211,7 +255,7 @@ with left:
 
 
 # =========================================================
-# RIGHT SIDE - RESULTS
+# RIGHT SIDE - PREDICTION RESULTS
 # =========================================================
 
 with right:
@@ -223,8 +267,17 @@ with right:
 
     if predict_button:
 
-        # Convert values exactly as used during model training
+        # =================================================
+        # CONVERT INPUTS TO MODEL FORMAT
+        # =================================================
+
+        # Senior Citizen
+        senior_citizen_value = 1 if senior_citizen == "Yes" else 0
+
+        # Gender
         gender_value = 1 if gender == "Male" else 0
+
+        # Yes / No variables
         partner_value = 1 if partner == "Yes" else 0
         dependents_value = 1 if dependents == "Yes" else 0
         phone_service_value = 1 if phone_service == "Yes" else 0
@@ -232,94 +285,177 @@ with right:
         streaming_tv_value = 1 if streaming_tv == "Yes" else 0
         streaming_movies_value = 1 if streaming_movies == "Yes" else 0
 
-        # Input dataframe
+
+        # =================================================
+        # CREATE INPUT DATAFRAME
+        # =================================================
+
         input_data = pd.DataFrame([{
-            "SeniorCitizen": senior_citizen,
+
+            "SeniorCitizen": senior_citizen_value,
+
             "tenure": tenure,
+
             "TotalCharges": total_charges,
+
             "gender": gender_value,
+
             "Partner": partner_value,
+
             "Dependents": dependents_value,
+
             "PhoneService": phone_service_value,
+
             "PaperlessBilling": paperless_billing_value,
+
             "StreamingTV": streaming_tv_value,
+
             "StreamingMovies": streaming_movies_value
+
         }])
 
-        # ---------------- CHURN PREDICTION ----------------
+
+        # =================================================
+        # LOGISTIC REGRESSION - CHURN PREDICTION
+        # =================================================
+
         churn_prediction = logistic_model.predict(input_data)
+
         churn_probability = logistic_model.predict_proba(input_data)
+
+
+        # =================================================
+        # CHURN RESULT
+        # =================================================
 
         if churn_prediction[0] == 1:
 
             st.markdown("""
             <div class="result-card">
-                <div class="result-heading">CUSTOMER CHURN</div>
-                <div class="churn-text">❌ Customer Predicted to Churn</div>
+
+                <div class="result-heading">
+                    CUSTOMER CHURN
+                </div>
+
+                <div class="churn-text">
+                    ❌ Customer Predicted to Churn
+                </div>
+
                 <br>
+
                 <div class="probability">
                     Probability of Staying:
                     <b>{:.2%}</b>
                 </div>
+
                 <div class="probability">
                     Probability of Churning:
                     <b>{:.2%}</b>
                 </div>
+
             </div>
             """.format(
                 churn_probability[0][0],
                 churn_probability[0][1]
             ), unsafe_allow_html=True)
+
 
         else:
 
             st.markdown("""
             <div class="result-card">
-                <div class="result-heading">CUSTOMER CHURN</div>
-                <div class="stay-text">✅ Customer Predicted to Stay</div>
+
+                <div class="result-heading">
+                    CUSTOMER CHURN
+                </div>
+
+                <div class="stay-text">
+                    ✅ Customer Predicted to Stay
+                </div>
+
                 <br>
+
                 <div class="probability">
                     Probability of Staying:
                     <b>{:.2%}</b>
                 </div>
+
                 <div class="probability">
                     Probability of Churning:
                     <b>{:.2%}</b>
                 </div>
+
             </div>
             """.format(
                 churn_probability[0][0],
                 churn_probability[0][1]
             ), unsafe_allow_html=True)
 
-        # ---------------- MONTHLY CHARGES ----------------
+
+        # =================================================
+        # LINEAR REGRESSION - MONTHLY CHARGES
+        # =================================================
+
         monthly_charges = linear_model.predict(input_data)[0]
+
+
+        # =================================================
+        # MONTHLY CHARGES RESULT
+        # =================================================
 
         st.markdown("""
         <div class="result-card">
-            <div class="result-heading">💰 ESTIMATED MONTHLY CHARGES</div>
-            <div class="charge-value">${:.2f}</div>
-            <br>
-            <div class="probability">
-                Estimated monthly charges based on customer characteristics.
+
+            <div class="result-heading">
+                💰 ESTIMATED MONTHLY CHARGES
             </div>
+
+            <div class="charge-value">
+                ${:.2f}
+            </div>
+
+            <br>
+
+            <div class="probability">
+                Estimated monthly charges based on
+                customer characteristics.
+            </div>
+
         </div>
-        """.format(monthly_charges), unsafe_allow_html=True)
+        """.format(
+            monthly_charges
+        ), unsafe_allow_html=True)
+
 
     else:
 
+        # Initial message before prediction
+
         st.markdown("""
         <div class="result-card">
-            <div class="result-heading">PREDICTION RESULTS</div>
-            <div style="font-size:20px; color:#64748b;">
+
+            <div class="result-heading">
+                PREDICTION RESULTS
+            </div>
+
+            <div style="
+                font-size:20px;
+                color:#64748b;
+                line-height:1.5;
+            ">
+
                 Enter customer information and click
                 <b>Analyze Customer</b> to view predictions.
+
             </div>
+
         </div>
         """, unsafe_allow_html=True)
 
 
-# ---------------- FOOTER ----------------
+# =========================================================
+# FOOTER
+# =========================================================
 
 st.markdown("""
 <div class="footer">
