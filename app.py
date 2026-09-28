@@ -30,7 +30,7 @@ st.markdown("""
 <style>
 
 /* ========================================================
-   BACKGROUND
+   PAGE BACKGROUND
 ======================================================== */
 
 .stApp {
@@ -45,25 +45,25 @@ st.markdown("""
 .main-title {
     font-size: 38px;
     font-weight: 800;
-    color: #17365d;
+    color: #17365d !important;
     margin-bottom: 5px;
 }
 
 .subtitle {
     font-size: 17px;
-    color: #64748b;
+    color: #64748b !important;
     margin-bottom: 5px;
 }
 
 .developed-by {
     font-size: 15px;
-    color: #64748b;
+    color: #64748b !important;
     margin-bottom: 10px;
 }
 
 .instruction {
     font-size: 15px;
-    color: #64748b;
+    color: #64748b !important;
     margin-bottom: 30px;
 }
 
@@ -75,7 +75,7 @@ st.markdown("""
 .section-title {
     font-size: 25px;
     font-weight: 750;
-    color: #17365d;
+    color: #17365d !important;
     margin-bottom: 18px;
 }
 
@@ -85,16 +85,21 @@ st.markdown("""
 ======================================================== */
 
 .custom-label {
-    color: #17365d;
+    color: #17365d !important;
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 6px;
 }
 
+
+/* ========================================================
+   INFORMATION ICON
+======================================================== */
+
 .info-icon {
     display: inline-block;
     margin-left: 4px;
-    color: #17365d;
+    color: #17365d !important;
     font-size: 14px;
     font-weight: 700;
     cursor: help;
@@ -116,7 +121,7 @@ st.markdown("""
     width: 280px;
 
     background-color: #ffffff;
-    color: #17365d;
+    color: #17365d !important;
 
     border: 1px solid #cbd5e1;
     border-radius: 8px;
@@ -136,7 +141,8 @@ st.markdown("""
 }
 
 
-/* Show tooltip only when mouse is over icon */
+/* Show tooltip only on hover */
+
 .info-icon:hover .tooltip-text {
     visibility: visible;
     opacity: 1;
@@ -165,17 +171,43 @@ div[data-testid="stNumberInput"] label {
 
 
 /* ========================================================
-   NORMAL TEXT
+   RESULT TEXT
 ======================================================== */
 
 .result-text {
     color: #17365d !important;
     font-size: 16px;
+    line-height: 1.5;
 }
 
 
 /* ========================================================
-   BUTTON
+   MONTHLY CHARGES VALUE
+======================================================== */
+
+.charge-value {
+    color: #17365d !important;
+    font-size: 42px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+}
+
+
+/* ========================================================
+   MONTHLY CHARGES DESCRIPTION
+======================================================== */
+
+.charge-description {
+    color: #17365d !important;
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+}
+
+
+/* ========================================================
+   ANALYZE BUTTON
 ======================================================== */
 
 div.stButton > button {
@@ -196,7 +228,7 @@ div.stButton > button {
 
 .footer {
     text-align: center;
-    color: #64748b;
+    color: #64748b !important;
     font-size: 15px;
     margin-top: 45px;
     padding: 20px;
@@ -207,7 +239,7 @@ div.stButton > button {
 
 
 # =========================================================
-# HELPER FUNCTION FOR LABEL + TOOLTIP
+# FUNCTION FOR CUSTOM LABEL + TOOLTIP
 # =========================================================
 
 def show_label(label, explanation):
@@ -304,7 +336,6 @@ with left:
             label_visibility="collapsed"
         )
 
-
     with col2:
 
         show_label(
@@ -339,7 +370,6 @@ with left:
             value=24,
             label_visibility="collapsed"
         )
-
 
     with col2:
 
@@ -376,7 +406,6 @@ with left:
             label_visibility="collapsed"
         )
 
-
     with col2:
 
         show_label(
@@ -410,7 +439,6 @@ with left:
             label_visibility="collapsed"
         )
 
-
     with col2:
 
         show_label(
@@ -443,7 +471,6 @@ with left:
             ["Yes", "No"],
             label_visibility="collapsed"
         )
-
 
     with col2:
 
@@ -570,7 +597,7 @@ with right:
 
 
         # =================================================
-        # LOGISTIC REGRESSION - CHURN PREDICTION
+        # LOGISTIC REGRESSION
         # =================================================
 
         churn_prediction = logistic_model.predict(
@@ -611,6 +638,8 @@ with right:
                 )
 
 
+            # Probability of staying
+
             st.markdown(
                 f"""
                 <div class="result-text">
@@ -622,6 +651,9 @@ with right:
             )
 
             st.write("")
+
+
+            # Probability of churning
 
             st.markdown(
                 f"""
@@ -635,7 +667,7 @@ with right:
 
 
         # =================================================
-        # LINEAR REGRESSION - MONTHLY CHARGES
+        # LINEAR REGRESSION
         # =================================================
 
         monthly_charges = linear_model.predict(
@@ -656,26 +688,26 @@ with right:
                 unsafe_allow_html=True
             )
 
+
+            # Monthly charges amount
+
             st.markdown(
                 f"""
-                <h1 style="
-                    color:#17365d !important;
-                    font-size:40px;
-                    margin-bottom:10px;
-                ">
+                <div class="charge-value">
                     ${monthly_charges:.2f}
-                </h1>
+                </div>
                 """,
                 unsafe_allow_html=True
             )
 
+
+            # Description
+
             st.markdown(
-                """
-                <div class="result-text">
-                    Estimated monthly charges based on
-                    customer characteristics.
-                </div>
-                """,
+                '<div class="charge-description">'
+                'Estimated monthly charges based on '
+                'customer characteristics.'
+                '</div>',
                 unsafe_allow_html=True
             )
 
