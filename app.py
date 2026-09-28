@@ -2,6 +2,7 @@ import streamlit as st
 import joblib
 import pandas as pd
 
+
 # =========================================================
 # LOAD MODELS
 # =========================================================
@@ -28,11 +29,19 @@ st.set_page_config(
 st.markdown("""
 <style>
 
+/* ---------------------------------------------------------
+   PAGE BACKGROUND
+--------------------------------------------------------- */
+
 .stApp {
     background-color: #f5f7fb;
 }
 
-/* Main title */
+
+/* ---------------------------------------------------------
+   MAIN TITLE
+--------------------------------------------------------- */
+
 .main-title {
     font-size: 38px;
     font-weight: 800;
@@ -40,28 +49,44 @@ st.markdown("""
     margin-bottom: 5px;
 }
 
-/* Subtitle */
+
+/* ---------------------------------------------------------
+   SUBTITLE
+--------------------------------------------------------- */
+
 .subtitle {
     font-size: 17px;
     color: #64748b !important;
     margin-bottom: 5px;
 }
 
-/* Developed by */
+
+/* ---------------------------------------------------------
+   DEVELOPED BY
+--------------------------------------------------------- */
+
 .developed-by {
     font-size: 15px;
     color: #64748b !important;
     margin-bottom: 12px;
 }
 
-/* User instruction */
+
+/* ---------------------------------------------------------
+   INSTRUCTION
+--------------------------------------------------------- */
+
 .instruction {
     font-size: 15px;
     color: #64748b !important;
     margin-bottom: 30px;
 }
 
-/* Section headings */
+
+/* ---------------------------------------------------------
+   SECTION HEADINGS
+--------------------------------------------------------- */
+
 .section-title {
     font-size: 25px;
     font-weight: 750;
@@ -69,7 +94,11 @@ st.markdown("""
     margin-bottom: 18px;
 }
 
-/* Input labels */
+
+/* ---------------------------------------------------------
+   INPUT LABELS
+--------------------------------------------------------- */
+
 label {
     color: #17365d !important;
     font-weight: 600 !important;
@@ -80,7 +109,11 @@ label {
     font-weight: 600 !important;
 }
 
-/* Normal text */
+
+/* ---------------------------------------------------------
+   NORMAL TEXT
+--------------------------------------------------------- */
+
 .stMarkdown p,
 .stMarkdown span,
 [data-testid="stMarkdownContainer"] p,
@@ -88,14 +121,43 @@ label {
     color: #17365d !important;
 }
 
-/* Result title */
+
+/* ---------------------------------------------------------
+   TOOLTIP
+--------------------------------------------------------- */
+
+[data-testid="stTooltipContent"],
+[role="tooltip"] {
+    background-color: white !important;
+    color: #17365d !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 8px !important;
+    padding: 10px 12px !important;
+    font-size: 14px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+[data-testid="stTooltipContent"] *,
+[role="tooltip"] * {
+    color: #17365d !important;
+}
+
+
+/* ---------------------------------------------------------
+   RESULT TITLE
+--------------------------------------------------------- */
+
 .result-title {
     color: #17365d !important;
     font-size: 18px;
     font-weight: 800;
 }
 
-/* Button */
+
+/* ---------------------------------------------------------
+   ANALYZE BUTTON
+--------------------------------------------------------- */
+
 div.stButton > button {
     width: 100%;
     background: linear-gradient(90deg, #4f46e5, #6366f1);
@@ -107,7 +169,11 @@ div.stButton > button {
     padding: 12px;
 }
 
-/* Footer */
+
+/* ---------------------------------------------------------
+   FOOTER
+--------------------------------------------------------- */
+
 .footer {
     text-align: center;
     color: #64748b !important;
@@ -125,23 +191,29 @@ div.stButton > button {
 # =========================================================
 
 st.markdown(
-    '<div class="main-title">📡 ABC Ltd Telecom Decision Support</div>',
+    '<div class="main-title">'
+    '📡 ABC Ltd Telecom Decision Support'
+    '</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
-    '<div class="subtitle">Customer churn prediction & monthly charges estimation</div>',
+    '<div class="subtitle">'
+    'Customer churn prediction & monthly charges estimation'
+    '</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
-    '<div class="developed-by">Developed by Group 10</div>',
+    '<div class="developed-by">'
+    'Developed by Group 10'
+    '</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
     '<div class="instruction">'
-    'ⓘ Hover over the information icons for help with each field.'
+    'Hover over the information icons for help with each field.'
     '</div>',
     unsafe_allow_html=True
 )
@@ -151,7 +223,10 @@ st.markdown(
 # TWO COLUMN LAYOUT
 # =========================================================
 
-left, right = st.columns([1, 1], gap="large")
+left, right = st.columns(
+    [1, 1],
+    gap="large"
+)
 
 
 # =========================================================
@@ -161,7 +236,9 @@ left, right = st.columns([1, 1], gap="large")
 with left:
 
     st.markdown(
-        '<div class="section-title">👤 Customer Information</div>',
+        '<div class="section-title">'
+        '👤 Customer Information'
+        '</div>',
         unsafe_allow_html=True
     )
 
@@ -175,17 +252,21 @@ with left:
     with col1:
 
         senior_citizen = st.selectbox(
-            "Senior Citizen ⓘ",
+            "Senior Citizen",
             ["No", "Yes"],
-            help="Select Yes if the customer is a senior citizen."
+            help=(
+                "Select Yes if the customer is a senior citizen."
+            )
         )
 
     with col2:
 
         gender = st.selectbox(
-            "Gender ⓘ",
+            "Gender",
             ["Male", "Female"],
-            help="Select the customer's gender."
+            help=(
+                "Select the customer's gender."
+            )
         )
 
 
@@ -198,21 +279,27 @@ with left:
     with col1:
 
         tenure = st.number_input(
-            "Tenure (months) ⓘ",
+            "Tenure (months)",
             min_value=0,
             max_value=100,
             value=24,
-            help="Number of months the customer has been with the company."
+            help=(
+                "Number of months the customer has "
+                "been with the company."
+            )
         )
 
     with col2:
 
         total_charges = st.number_input(
-            "Total Charges ($) ⓘ",
+            "Total Charges ($)",
             min_value=0.0,
             value=1500.0,
             step=100.0,
-            help="Total amount charged to the customer so far."
+            help=(
+                "Total amount charged to the customer "
+                "so far."
+            )
         )
 
 
@@ -225,17 +312,24 @@ with left:
     with col1:
 
         partner = st.selectbox(
-            "Partner ⓘ",
+            "Partner",
             ["Yes", "No"],
-            help="Select Yes if the customer has a partner or spouse."
+            help=(
+                "Select Yes if the customer has "
+                "a partner or spouse."
+            )
         )
 
     with col2:
 
         dependents = st.selectbox(
-            "Dependents ⓘ",
+            "Dependents",
             ["Yes", "No"],
-            help="Select Yes if the customer has dependents, such as children or other financially dependent people."
+            help=(
+                "Select Yes if the customer has dependents, "
+                "such as children or other financially "
+                "dependent people."
+            )
         )
 
 
@@ -248,17 +342,23 @@ with left:
     with col1:
 
         phone_service = st.selectbox(
-            "Phone Service ⓘ",
+            "Phone Service",
             ["Yes", "No"],
-            help="Select Yes if the customer has a phone service subscription."
+            help=(
+                "Select Yes if the customer has "
+                "a phone service subscription."
+            )
         )
 
     with col2:
 
         paperless_billing = st.selectbox(
-            "Paperless Billing ⓘ",
+            "Paperless Billing",
             ["Yes", "No"],
-            help="Select Yes if the customer uses paperless billing instead of paper bills."
+            help=(
+                "Select Yes if the customer uses "
+                "paperless billing instead of paper bills."
+            )
         )
 
 
@@ -271,17 +371,23 @@ with left:
     with col1:
 
         streaming_tv = st.selectbox(
-            "Streaming TV ⓘ",
+            "Streaming TV",
             ["Yes", "No"],
-            help="Select Yes if the customer subscribes to a streaming TV service."
+            help=(
+                "Select Yes if the customer subscribes "
+                "to a streaming TV service."
+            )
         )
 
     with col2:
 
         streaming_movies = st.selectbox(
-            "Streaming Movies ⓘ",
+            "Streaming Movies",
             ["Yes", "No"],
-            help="Select Yes if the customer subscribes to a streaming movie service."
+            help=(
+                "Select Yes if the customer subscribes "
+                "to a streaming movie service."
+            )
         )
 
 
@@ -304,7 +410,9 @@ with left:
 with right:
 
     st.markdown(
-        '<div class="section-title">📊 Prediction Results</div>',
+        '<div class="section-title">'
+        '📊 Prediction Results'
+        '</div>',
         unsafe_allow_html=True
     )
 
@@ -413,7 +521,9 @@ with right:
         with st.container(border=True):
 
             st.markdown(
-                '<div class="result-title">CUSTOMER CHURN</div>',
+                '<div class="result-title">'
+                'CUSTOMER CHURN'
+                '</div>',
                 unsafe_allow_html=True
             )
 
