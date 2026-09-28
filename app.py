@@ -29,123 +29,133 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-/* ---------------------------------------------------------
-   PAGE BACKGROUND
---------------------------------------------------------- */
+/* ========================================================
+   BACKGROUND
+======================================================== */
 
 .stApp {
     background-color: #f5f7fb;
 }
 
 
-/* ---------------------------------------------------------
-   MAIN TITLE
---------------------------------------------------------- */
+/* ========================================================
+   HEADER
+======================================================== */
 
 .main-title {
     font-size: 38px;
     font-weight: 800;
-    color: #17365d !important;
+    color: #17365d;
     margin-bottom: 5px;
 }
-
-
-/* ---------------------------------------------------------
-   SUBTITLE
---------------------------------------------------------- */
 
 .subtitle {
     font-size: 17px;
-    color: #64748b !important;
+    color: #64748b;
     margin-bottom: 5px;
 }
 
-
-/* ---------------------------------------------------------
-   DEVELOPED BY
---------------------------------------------------------- */
-
 .developed-by {
     font-size: 15px;
-    color: #64748b !important;
-    margin-bottom: 12px;
+    color: #64748b;
+    margin-bottom: 10px;
 }
-
-
-/* ---------------------------------------------------------
-   INSTRUCTION
---------------------------------------------------------- */
 
 .instruction {
     font-size: 15px;
-    color: #64748b !important;
+    color: #64748b;
     margin-bottom: 30px;
 }
 
 
-/* ---------------------------------------------------------
+/* ========================================================
    SECTION HEADINGS
---------------------------------------------------------- */
+======================================================== */
 
 .section-title {
     font-size: 25px;
     font-weight: 750;
-    color: #17365d !important;
+    color: #17365d;
     margin-bottom: 18px;
 }
 
 
-/* ---------------------------------------------------------
-   INPUT LABELS
---------------------------------------------------------- */
+/* ========================================================
+   CUSTOM INPUT LABEL
+======================================================== */
 
-label {
-    color: #17365d !important;
-    font-weight: 600 !important;
+.custom-label {
+    color: #17365d;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
 }
 
-[data-testid="stWidgetLabel"] p {
-    color: #17365d !important;
-    font-weight: 600 !important;
-}
-
-
-/* ---------------------------------------------------------
-   NORMAL TEXT
---------------------------------------------------------- */
-
-.stMarkdown p,
-.stMarkdown span,
-[data-testid="stMarkdownContainer"] p,
-[data-testid="stMarkdownContainer"] span {
-    color: #17365d !important;
+.info-icon {
+    display: inline-block;
+    margin-left: 4px;
+    color: #17365d;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: help;
+    position: relative;
 }
 
 
-/* ---------------------------------------------------------
+/* ========================================================
    TOOLTIP
---------------------------------------------------------- */
+======================================================== */
 
-[data-testid="stTooltipContent"],
-[role="tooltip"] {
-    background-color: white !important;
-    color: #17365d !important;
-    border: 1px solid #d1d5db !important;
-    border-radius: 8px !important;
-    padding: 10px 12px !important;
-    font-size: 14px !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+.info-icon .tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+
+    position: absolute;
+    z-index: 9999;
+
+    width: 280px;
+
+    background-color: #ffffff;
+    color: #17365d;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+
+    padding: 10px 12px;
+
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.4;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.18);
+
+    left: 20px;
+    top: -5px;
+
+    transition: opacity 0.15s ease;
 }
 
-[data-testid="stTooltipContent"] *,
-[role="tooltip"] * {
-    color: #17365d !important;
+
+/* Show tooltip only when mouse is over icon */
+.info-icon:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
 }
 
 
-/* ---------------------------------------------------------
+/* ========================================================
+   HIDE STREAMLIT DEFAULT LABEL
+======================================================== */
+
+div[data-testid="stSelectbox"] label,
+div[data-testid="stNumberInput"] label {
+    display: none !important;
+}
+
+
+/* ========================================================
    RESULT TITLE
---------------------------------------------------------- */
+======================================================== */
 
 .result-title {
     color: #17365d !important;
@@ -154,9 +164,19 @@ label {
 }
 
 
-/* ---------------------------------------------------------
-   ANALYZE BUTTON
---------------------------------------------------------- */
+/* ========================================================
+   NORMAL TEXT
+======================================================== */
+
+.result-text {
+    color: #17365d !important;
+    font-size: 16px;
+}
+
+
+/* ========================================================
+   BUTTON
+======================================================== */
 
 div.stButton > button {
     width: 100%;
@@ -170,13 +190,13 @@ div.stButton > button {
 }
 
 
-/* ---------------------------------------------------------
+/* ========================================================
    FOOTER
---------------------------------------------------------- */
+======================================================== */
 
 .footer {
     text-align: center;
-    color: #64748b !important;
+    color: #64748b;
     font-size: 15px;
     margin-top: 45px;
     padding: 20px;
@@ -184,6 +204,28 @@ div.stButton > button {
 
 </style>
 """, unsafe_allow_html=True)
+
+
+# =========================================================
+# HELPER FUNCTION FOR LABEL + TOOLTIP
+# =========================================================
+
+def show_label(label, explanation):
+
+    st.markdown(
+        f"""
+        <div class="custom-label">
+            {label}
+            <span class="info-icon">
+                ⓘ
+                <span class="tooltip-text">
+                    {explanation}
+                </span>
+            </span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 
 # =========================================================
@@ -213,7 +255,7 @@ st.markdown(
 
 st.markdown(
     '<div class="instruction">'
-    'Hover over the information icons for help with each field.'
+    'Hover over the ⓘ icons for help with each field.'
     '</div>',
     unsafe_allow_html=True
 )
@@ -243,160 +285,186 @@ with left:
     )
 
 
-    # -----------------------------------------------------
+    # =====================================================
     # SENIOR CITIZEN + GENDER
-    # -----------------------------------------------------
+    # =====================================================
 
     col1, col2 = st.columns(2)
 
     with col1:
+
+        show_label(
+            "Senior Citizen",
+            "Select Yes if the customer is a senior citizen."
+        )
 
         senior_citizen = st.selectbox(
             "Senior Citizen",
             ["No", "Yes"],
-            help=(
-                "Select Yes if the customer is a senior citizen."
-            )
+            label_visibility="collapsed"
         )
 
+
     with col2:
+
+        show_label(
+            "Gender",
+            "Select the customer's gender."
+        )
 
         gender = st.selectbox(
             "Gender",
             ["Male", "Female"],
-            help=(
-                "Select the customer's gender."
-            )
+            label_visibility="collapsed"
         )
 
 
-    # -----------------------------------------------------
+    # =====================================================
     # TENURE + TOTAL CHARGES
-    # -----------------------------------------------------
+    # =====================================================
 
     col1, col2 = st.columns(2)
 
     with col1:
 
-        tenure = st.number_input(
+        show_label(
             "Tenure (months)",
+            "Number of months the customer has been with the company."
+        )
+
+        tenure = st.number_input(
+            "Tenure",
             min_value=0,
             max_value=100,
             value=24,
-            help=(
-                "Number of months the customer has "
-                "been with the company."
-            )
+            label_visibility="collapsed"
         )
+
 
     with col2:
 
-        total_charges = st.number_input(
+        show_label(
             "Total Charges ($)",
+            "Total amount charged to the customer so far."
+        )
+
+        total_charges = st.number_input(
+            "Total Charges",
             min_value=0.0,
             value=1500.0,
             step=100.0,
-            help=(
-                "Total amount charged to the customer "
-                "so far."
-            )
+            label_visibility="collapsed"
         )
 
 
-    # -----------------------------------------------------
+    # =====================================================
     # PARTNER + DEPENDENTS
-    # -----------------------------------------------------
+    # =====================================================
 
     col1, col2 = st.columns(2)
 
     with col1:
+
+        show_label(
+            "Partner",
+            "Select Yes if the customer has a partner or spouse."
+        )
 
         partner = st.selectbox(
             "Partner",
             ["Yes", "No"],
-            help=(
-                "Select Yes if the customer has "
-                "a partner or spouse."
-            )
+            label_visibility="collapsed"
         )
 
+
     with col2:
+
+        show_label(
+            "Dependents",
+            "Select Yes if the customer has dependents, such as children or other financially dependent people."
+        )
 
         dependents = st.selectbox(
             "Dependents",
             ["Yes", "No"],
-            help=(
-                "Select Yes if the customer has dependents, "
-                "such as children or other financially "
-                "dependent people."
-            )
+            label_visibility="collapsed"
         )
 
 
-    # -----------------------------------------------------
+    # =====================================================
     # PHONE SERVICE + PAPERLESS BILLING
-    # -----------------------------------------------------
+    # =====================================================
 
     col1, col2 = st.columns(2)
 
     with col1:
+
+        show_label(
+            "Phone Service",
+            "Select Yes if the customer has a phone service subscription."
+        )
 
         phone_service = st.selectbox(
             "Phone Service",
             ["Yes", "No"],
-            help=(
-                "Select Yes if the customer has "
-                "a phone service subscription."
-            )
+            label_visibility="collapsed"
         )
 
+
     with col2:
+
+        show_label(
+            "Paperless Billing",
+            "Select Yes if the customer uses paperless billing instead of paper bills."
+        )
 
         paperless_billing = st.selectbox(
             "Paperless Billing",
             ["Yes", "No"],
-            help=(
-                "Select Yes if the customer uses "
-                "paperless billing instead of paper bills."
-            )
+            label_visibility="collapsed"
         )
 
 
-    # -----------------------------------------------------
+    # =====================================================
     # STREAMING TV + STREAMING MOVIES
-    # -----------------------------------------------------
+    # =====================================================
 
     col1, col2 = st.columns(2)
 
     with col1:
 
+        show_label(
+            "Streaming TV",
+            "Select Yes if the customer subscribes to a streaming TV service."
+        )
+
         streaming_tv = st.selectbox(
             "Streaming TV",
             ["Yes", "No"],
-            help=(
-                "Select Yes if the customer subscribes "
-                "to a streaming TV service."
-            )
+            label_visibility="collapsed"
         )
 
+
     with col2:
+
+        show_label(
+            "Streaming Movies",
+            "Select Yes if the customer subscribes to a streaming movie service."
+        )
 
         streaming_movies = st.selectbox(
             "Streaming Movies",
             ["Yes", "No"],
-            help=(
-                "Select Yes if the customer subscribes "
-                "to a streaming movie service."
-            )
+            label_visibility="collapsed"
         )
 
 
     st.write("")
 
 
-    # -----------------------------------------------------
+    # =====================================================
     # ANALYZE BUTTON
-    # -----------------------------------------------------
+    # =====================================================
 
     predict_button = st.button(
         "🔍 Analyze Customer"
@@ -435,9 +503,9 @@ with right:
 
     else:
 
-        # -------------------------------------------------
+        # =================================================
         # CONVERT INPUTS TO MODEL FORMAT
-        # -------------------------------------------------
+        # =================================================
 
         senior_citizen_value = (
             1 if senior_citizen == "Yes" else 0
@@ -472,9 +540,9 @@ with right:
         )
 
 
-        # -------------------------------------------------
+        # =================================================
         # CREATE INPUT DATAFRAME
-        # -------------------------------------------------
+        # =================================================
 
         input_data = pd.DataFrame([{
 
@@ -502,7 +570,7 @@ with right:
 
 
         # =================================================
-        # LOGISTIC REGRESSION - CHURN
+        # LOGISTIC REGRESSION - CHURN PREDICTION
         # =================================================
 
         churn_prediction = logistic_model.predict(
@@ -544,21 +612,24 @@ with right:
 
 
             st.markdown(
-                f'<p style="color:#17365d !important; '
-                f'font-size:16px;">'
-                f'Probability of Staying: '
-                f'<b>{churn_probability[0][0]:.2%}</b>'
-                f'</p>',
+                f"""
+                <div class="result-text">
+                    Probability of Staying:
+                    <b>{churn_probability[0][0]:.2%}</b>
+                </div>
+                """,
                 unsafe_allow_html=True
             )
 
+            st.write("")
 
             st.markdown(
-                f'<p style="color:#17365d !important; '
-                f'font-size:16px;">'
-                f'Probability of Churning: '
-                f'<b>{churn_probability[0][1]:.2%}</b>'
-                f'</p>',
+                f"""
+                <div class="result-text">
+                    Probability of Churning:
+                    <b>{churn_probability[0][1]:.2%}</b>
+                </div>
+                """,
                 unsafe_allow_html=True
             )
 
@@ -586,19 +657,25 @@ with right:
             )
 
             st.markdown(
-                f'<h1 style="color:#17365d !important; '
-                f'font-size:40px;">'
-                f'${monthly_charges:.2f}'
-                f'</h1>',
+                f"""
+                <h1 style="
+                    color:#17365d !important;
+                    font-size:40px;
+                    margin-bottom:10px;
+                ">
+                    ${monthly_charges:.2f}
+                </h1>
+                """,
                 unsafe_allow_html=True
             )
 
             st.markdown(
-                '<p style="color:#17365d !important; '
-                'font-size:16px;">'
-                'Estimated monthly charges based on '
-                'customer characteristics.'
-                '</p>',
+                """
+                <div class="result-text">
+                    Estimated monthly charges based on
+                    customer characteristics.
+                </div>
+                """,
                 unsafe_allow_html=True
             )
 
