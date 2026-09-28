@@ -1,6 +1,7 @@
 import streamlit as st
 import joblib
 import pandas as pd
+import textwrap
 
 # =========================================================
 # LOAD MODELS
@@ -182,7 +183,7 @@ with left:
         unsafe_allow_html=True
     )
 
-    # Row 1
+    # Senior Citizen + Gender
     col1, col2 = st.columns(2)
 
     with col1:
@@ -197,7 +198,7 @@ with left:
             ["Male", "Female"]
         )
 
-    # Row 2
+    # Tenure + Total Charges
     col1, col2 = st.columns(2)
 
     with col1:
@@ -216,7 +217,7 @@ with left:
             step=100.0
         )
 
-    # Row 3
+    # Partner + Dependents
     col1, col2 = st.columns(2)
 
     with col1:
@@ -231,7 +232,7 @@ with left:
             ["Yes", "No"]
         )
 
-    # Row 4
+    # Phone Service + Paperless Billing
     col1, col2 = st.columns(2)
 
     with col1:
@@ -246,7 +247,7 @@ with left:
             ["Yes", "No"]
         )
 
-    # Row 5
+    # Streaming TV + Streaming Movies
     col1, col2 = st.columns(2)
 
     with col1:
@@ -278,7 +279,7 @@ with right:
     )
 
     # =====================================================
-    # BEFORE BUTTON IS CLICKED
+    # BEFORE PREDICTION
     # =====================================================
 
     if not predict_button:
@@ -289,7 +290,7 @@ with right:
         )
 
     # =====================================================
-    # AFTER BUTTON IS CLICKED
+    # AFTER PREDICTION
     # =====================================================
 
     else:
@@ -336,41 +337,26 @@ with right:
         # -------------------------------------------------
 
         input_data = pd.DataFrame([{
-
             "SeniorCitizen": senior_citizen_value,
-
             "tenure": tenure,
-
             "TotalCharges": total_charges,
-
             "gender": gender_value,
-
             "Partner": partner_value,
-
             "Dependents": dependents_value,
-
             "PhoneService": phone_service_value,
-
             "PaperlessBilling": paperless_billing_value,
-
             "StreamingTV": streaming_tv_value,
-
             "StreamingMovies": streaming_movies_value
-
         }])
 
 
         # =================================================
-        # LOGISTIC REGRESSION - CHURN PREDICTION
+        # LOGISTIC REGRESSION
         # =================================================
 
-        churn_prediction = logistic_model.predict(
-            input_data
-        )
+        churn_prediction = logistic_model.predict(input_data)
 
-        churn_probability = logistic_model.predict_proba(
-            input_data
-        )
+        churn_probability = logistic_model.predict_proba(input_data)
 
 
         # =================================================
@@ -379,69 +365,79 @@ with right:
 
         if churn_prediction[0] == 1:
 
-            st.markdown("""
-            <div class="result-card">
+            churn_card = """
+<div class="result-card">
 
-                <div class="result-heading">
-                    CUSTOMER CHURN
-                </div>
+    <div class="result-heading">
+        CUSTOMER CHURN
+    </div>
 
-                <div class="churn-text">
-                    ❌ Customer Predicted to Churn
-                </div>
+    <div class="churn-text">
+        ❌ Customer Predicted to Churn
+    </div>
 
-                <br>
+    <br>
 
-                <div class="probability">
-                    Probability of Staying:
-                    <b>{:.2%}</b>
-                </div>
+    <div class="probability">
+        Probability of Staying:
+        <b>{:.2%}</b>
+    </div>
 
-                <div class="probability">
-                    Probability of Churning:
-                    <b>{:.2%}</b>
-                </div>
+    <div class="probability">
+        Probability of Churning:
+        <b>{:.2%}</b>
+    </div>
 
-            </div>
-            """.format(
+</div>
+""".format(
                 churn_probability[0][0],
                 churn_probability[0][1]
-            ), unsafe_allow_html=True)
+            )
+
+            st.markdown(
+                textwrap.dedent(churn_card),
+                unsafe_allow_html=True
+            )
 
         else:
 
-            st.markdown("""
-            <div class="result-card">
+            stay_card = """
+<div class="result-card">
 
-                <div class="result-heading">
-                    CUSTOMER CHURN
-                </div>
+    <div class="result-heading">
+        CUSTOMER CHURN
+    </div>
 
-                <div class="stay-text">
-                    ✅ Customer Predicted to Stay
-                </div>
+    <div class="stay-text">
+        ✅ Customer Predicted to Stay
+    </div>
 
-                <br>
+    <br>
 
-                <div class="probability">
-                    Probability of Staying:
-                    <b>{:.2%}</b>
-                </div>
+    <div class="probability">
+        Probability of Staying:
+        <b>{:.2%}</b>
+    </div>
 
-                <div class="probability">
-                    Probability of Churning:
-                    <b>{:.2%}</b>
-                </div>
+    <div class="probability">
+        Probability of Churning:
+        <b>{:.2%}</b>
+    </div>
 
-            </div>
-            """.format(
+</div>
+""".format(
                 churn_probability[0][0],
                 churn_probability[0][1]
-            ), unsafe_allow_html=True)
+            )
+
+            st.markdown(
+                textwrap.dedent(stay_card),
+                unsafe_allow_html=True
+            )
 
 
         # =================================================
-        # LINEAR REGRESSION - MONTHLY CHARGES
+        # LINEAR REGRESSION
         # =================================================
 
         monthly_charges = linear_model.predict(
@@ -450,39 +446,41 @@ with right:
 
 
         # =================================================
-        # MONTHLY CHARGES RESULT
+        # MONTHLY CHARGES CARD
         # =================================================
 
-        st.markdown("""
-        <div class="result-card">
+        charges_card = """
+<div class="result-card">
 
-            <div class="result-heading">
-                💰 ESTIMATED MONTHLY CHARGES
-            </div>
+    <div class="result-heading">
+        💰 ESTIMATED MONTHLY CHARGES
+    </div>
 
-            <div class="charge-value">
-                ${:.2f}
-            </div>
+    <div class="charge-value">
+        ${:.2f}
+    </div>
 
-            <br>
+    <br>
 
-            <div class="probability">
-                Estimated monthly charges based on
-                customer characteristics.
-            </div>
+    <div class="probability">
+        Estimated monthly charges based on
+        customer characteristics.
+    </div>
 
-        </div>
-        """.format(
-            monthly_charges
-        ), unsafe_allow_html=True)
+</div>
+""".format(monthly_charges)
+
+        st.markdown(
+            textwrap.dedent(charges_card),
+            unsafe_allow_html=True
+        )
 
 
 # =========================================================
 # FOOTER
 # =========================================================
 
-st.markdown("""
-<div class="footer">
-    <b>Developed by Group 10</b>
-</div>
-""", unsafe_allow_html=True)
+st.markdown(
+    '<div class="footer"><b>Developed by Group 10</b></div>',
+    unsafe_allow_html=True
+)
