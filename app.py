@@ -171,6 +171,17 @@ div[data-testid="stNumberInput"] label {
 
 
 /* ========================================================
+   RADIO BUTTON TEXT
+======================================================== */
+
+div[data-testid="stRadio"] label p {
+    color: #17365d !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+}
+
+
+/* ========================================================
    RESULT TITLE
 ======================================================== */
 
@@ -301,23 +312,50 @@ Extract ONLY these 10 fields:
 
 Rules:
 
-- SeniorCitizen: 1 if the customer is explicitly described as a senior citizen, otherwise 0 if explicitly described as not a senior citizen.
-- gender: 1 for Male, 0 for Female.
-- Partner: 1 for Yes, 0 for No.
-- Dependents: 1 for Yes, 0 for No.
-- PhoneService: 1 for Yes, 0 for No.
-- PaperlessBilling: 1 for Yes, 0 for No.
-- StreamingTV: 1 for Yes, 0 for No.
-- StreamingMovies: 1 for Yes, 0 for No.
-- tenure must be the number of months.
-- TotalCharges must be the total amount charged to the customer so far.
+- SeniorCitizen:
+  1 if the customer is explicitly described as a senior citizen.
+  0 if the customer is explicitly described as not a senior citizen.
+
+- gender:
+  1 for Male.
+  0 for Female.
+
+- Partner:
+  1 for Yes.
+  0 for No.
+
+- Dependents:
+  1 for Yes.
+  0 for No.
+
+- PhoneService:
+  1 for Yes.
+  0 for No.
+
+- PaperlessBilling:
+  1 for Yes.
+  0 for No.
+
+- StreamingTV:
+  1 for Yes.
+  0 for No.
+
+- StreamingMovies:
+  1 for Yes.
+  0 for No.
+
+- tenure:
+  Number of months the customer has been with the company.
+
+- TotalCharges:
+  Total amount charged to the customer so far.
 
 IMPORTANT:
 
 - Do NOT guess missing information.
-- If a required field is missing or unclear, return null for that field.
-- Do not infer SeniorCitizen from age.
-- Do not create information that is not present in the customer's description.
+- If a required field is missing or unclear, return null.
+- Do NOT infer SeniorCitizen from age.
+- Do NOT create information that is not present in the customer's description.
 - Return only the requested structured data.
 """
             },
