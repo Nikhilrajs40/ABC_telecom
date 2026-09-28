@@ -511,6 +511,7 @@ if input_method == "Manual Input":
         unsafe_allow_html=True
     )
 
+
     # =====================================================
     # TWO COLUMN LAYOUT
     # =====================================================
@@ -1222,36 +1223,33 @@ His total charges so far are $1500."""
 # FOOTER
 # =========================================================
 
+import urllib.parse
+
+sample_text = """The customer is a male and is not a senior citizen.
+He has been with the company for 1 month.
+He does not have a partner or dependents.
+He does not have phone service.
+He uses paperless billing.
+He uses streaming TV and streaming movies.
+His total charges so far are $29.85."""
+
+encoded_text = urllib.parse.quote(sample_text)
+
 st.markdown(
-    """
+    f"""
     <div class="footer">
-
         <a
-            href="data:text/html;charset=utf-8,
-            <html>
-            <head>
-                <title>AI Natural Language Example</title>
-            </head>
-
-            <body style='font-family:Arial; padding:40px; font-size:18px; line-height:1.6;'>
-
-                <p>
-                The customer is a male and is not a senior citizen.<br>
-                He has been with the company for 1 month.<br>
-                He does not have a partner or dependents.<br>
-                He does not have phone service.<br>
-                He uses paperless billing.<br>
-                He uses streaming TV and streaming movies.<br>
-                His total charges so far are $29.85.
-                </p>
-
-            </body>
-            </html>"
+            href="data:text/plain;charset=utf-8,{encoded_text}"
             target="_blank"
+            style="
+                color:#64748b;
+                text-decoration:none;
+                font-weight:bold;
+                cursor:pointer;
+            "
         >
-            <b>Developed by Group 10</b>
+            Developed by Group 10
         </a>
-
     </div>
     """,
     unsafe_allow_html=True
