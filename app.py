@@ -1,7 +1,6 @@
 import streamlit as st
 import joblib
 import pandas as pd
-import textwrap
 
 # =========================================================
 # LOAD MODELS
@@ -29,6 +28,7 @@ st.set_page_config(
 st.markdown("""
 <style>
 
+/* Background */
 .stApp {
     background-color: #f5f7fb;
 }
@@ -74,53 +74,7 @@ label {
     font-weight: 600 !important;
 }
 
-/* Result cards */
-.result-card {
-    background-color: white;
-    padding: 28px;
-    border-radius: 18px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    margin-bottom: 20px;
-}
-
-/* Result heading */
-.result-heading {
-    font-size: 14px;
-    font-weight: 700;
-    color: #64748b;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-}
-
-/* Stay prediction */
-.stay-text {
-    color: #008a4b;
-    font-size: 25px;
-    font-weight: 800;
-}
-
-/* Churn prediction */
-.churn-text {
-    color: #d93025;
-    font-size: 25px;
-    font-weight: 800;
-}
-
-/* Monthly charges */
-.charge-value {
-    color: #17365d;
-    font-size: 36px;
-    font-weight: 800;
-}
-
-/* Probability */
-.probability {
-    font-size: 16px;
-    color: #64748b;
-    margin-top: 12px;
-}
-
-/* Analyze button */
+/* Button */
 div.stButton > button {
     width: 100%;
     background: linear-gradient(90deg, #4f46e5, #6366f1);
@@ -130,6 +84,13 @@ div.stButton > button {
     border-radius: 12px;
     border: none;
     padding: 12px;
+}
+
+/* Result headings */
+.result-title {
+    color: #17365d;
+    font-size: 18px;
+    font-weight: 800;
 }
 
 /* Footer */
@@ -183,25 +144,35 @@ with left:
         unsafe_allow_html=True
     )
 
+    # -----------------------------------------------------
     # Senior Citizen + Gender
+    # -----------------------------------------------------
+
     col1, col2 = st.columns(2)
 
     with col1:
+
         senior_citizen = st.selectbox(
             "Senior Citizen",
             ["No", "Yes"]
         )
 
     with col2:
+
         gender = st.selectbox(
             "Gender",
             ["Male", "Female"]
         )
 
+
+    # -----------------------------------------------------
     # Tenure + Total Charges
+    # -----------------------------------------------------
+
     col1, col2 = st.columns(2)
 
     with col1:
+
         tenure = st.number_input(
             "Tenure (months)",
             min_value=0,
@@ -210,6 +181,7 @@ with left:
         )
 
     with col2:
+
         total_charges = st.number_input(
             "Total Charges ($)",
             min_value=0.0,
@@ -217,54 +189,80 @@ with left:
             step=100.0
         )
 
+
+    # -----------------------------------------------------
     # Partner + Dependents
+    # -----------------------------------------------------
+
     col1, col2 = st.columns(2)
 
     with col1:
+
         partner = st.selectbox(
             "Partner",
             ["Yes", "No"]
         )
 
     with col2:
+
         dependents = st.selectbox(
             "Dependents",
             ["Yes", "No"]
         )
 
+
+    # -----------------------------------------------------
     # Phone Service + Paperless Billing
+    # -----------------------------------------------------
+
     col1, col2 = st.columns(2)
 
     with col1:
+
         phone_service = st.selectbox(
             "Phone Service",
             ["Yes", "No"]
         )
 
     with col2:
+
         paperless_billing = st.selectbox(
             "Paperless Billing",
             ["Yes", "No"]
         )
 
+
+    # -----------------------------------------------------
     # Streaming TV + Streaming Movies
+    # -----------------------------------------------------
+
     col1, col2 = st.columns(2)
 
     with col1:
+
         streaming_tv = st.selectbox(
             "Streaming TV",
             ["Yes", "No"]
         )
 
     with col2:
+
         streaming_movies = st.selectbox(
             "Streaming Movies",
             ["Yes", "No"]
         )
 
+
     st.write("")
 
-    predict_button = st.button("🔍 Analyze Customer")
+
+    # -----------------------------------------------------
+    # ANALYZE BUTTON
+    # -----------------------------------------------------
+
+    predict_button = st.button(
+        "🔍 Analyze Customer"
+    )
 
 
 # =========================================================
@@ -278,19 +276,21 @@ with right:
         unsafe_allow_html=True
     )
 
+
     # =====================================================
-    # BEFORE PREDICTION
+    # BEFORE ANALYSIS
     # =====================================================
 
     if not predict_button:
 
         st.info(
-            "Enter customer information and click **Analyze Customer** "
-            "to view predictions."
+            "Enter customer information and click "
+            "**Analyze Customer** to view predictions."
         )
 
+
     # =====================================================
-    # AFTER PREDICTION
+    # AFTER ANALYSIS
     # =====================================================
 
     else:
@@ -337,16 +337,27 @@ with right:
         # -------------------------------------------------
 
         input_data = pd.DataFrame([{
+
             "SeniorCitizen": senior_citizen_value,
+
             "tenure": tenure,
+
             "TotalCharges": total_charges,
+
             "gender": gender_value,
+
             "Partner": partner_value,
+
             "Dependents": dependents_value,
+
             "PhoneService": phone_service_value,
+
             "PaperlessBilling": paperless_billing_value,
+
             "StreamingTV": streaming_tv_value,
+
             "StreamingMovies": streaming_movies_value
+
         }])
 
 
@@ -354,85 +365,50 @@ with right:
         # LOGISTIC REGRESSION
         # =================================================
 
-        churn_prediction = logistic_model.predict(input_data)
+        churn_prediction = logistic_model.predict(
+            input_data
+        )
 
-        churn_probability = logistic_model.predict_proba(input_data)
+        churn_probability = logistic_model.predict_proba(
+            input_data
+        )
 
 
         # =================================================
-        # CHURN RESULT
+        # CUSTOMER CHURN RESULT
         # =================================================
 
-        if churn_prediction[0] == 1:
-
-            churn_card = """
-<div class="result-card">
-
-    <div class="result-heading">
-        CUSTOMER CHURN
-    </div>
-
-    <div class="churn-text">
-        ❌ Customer Predicted to Churn
-    </div>
-
-    <br>
-
-    <div class="probability">
-        Probability of Staying:
-        <b>{:.2%}</b>
-    </div>
-
-    <div class="probability">
-        Probability of Churning:
-        <b>{:.2%}</b>
-    </div>
-
-</div>
-""".format(
-                churn_probability[0][0],
-                churn_probability[0][1]
-            )
+        with st.container(border=True):
 
             st.markdown(
-                textwrap.dedent(churn_card),
+                '<div class="result-title">CUSTOMER CHURN</div>',
                 unsafe_allow_html=True
             )
 
-        else:
+            st.write("")
 
-            stay_card = """
-<div class="result-card">
 
-    <div class="result-heading">
-        CUSTOMER CHURN
-    </div>
+            if churn_prediction[0] == 1:
 
-    <div class="stay-text">
-        ✅ Customer Predicted to Stay
-    </div>
+                st.error(
+                    "❌ Customer Predicted to Churn"
+                )
 
-    <br>
+            else:
 
-    <div class="probability">
-        Probability of Staying:
-        <b>{:.2%}</b>
-    </div>
+                st.success(
+                    "✅ Customer Predicted to Stay"
+                )
 
-    <div class="probability">
-        Probability of Churning:
-        <b>{:.2%}</b>
-    </div>
 
-</div>
-""".format(
-                churn_probability[0][0],
-                churn_probability[0][1]
+            st.write(
+                f"Probability of Staying: "
+                f"**{churn_probability[0][0]:.2%}**"
             )
 
-            st.markdown(
-                textwrap.dedent(stay_card),
-                unsafe_allow_html=True
+            st.write(
+                f"Probability of Churning: "
+                f"**{churn_probability[0][1]:.2%}**"
             )
 
 
@@ -446,34 +422,26 @@ with right:
 
 
         # =================================================
-        # MONTHLY CHARGES CARD
+        # MONTHLY CHARGES RESULT
         # =================================================
 
-        charges_card = """
-<div class="result-card">
+        with st.container(border=True):
 
-    <div class="result-heading">
-        💰 ESTIMATED MONTHLY CHARGES
-    </div>
+            st.markdown(
+                '<div class="result-title">'
+                '💰 ESTIMATED MONTHLY CHARGES'
+                '</div>',
+                unsafe_allow_html=True
+            )
 
-    <div class="charge-value">
-        ${:.2f}
-    </div>
+            st.markdown(
+                f"# ${monthly_charges:.2f}"
+            )
 
-    <br>
-
-    <div class="probability">
-        Estimated monthly charges based on
-        customer characteristics.
-    </div>
-
-</div>
-""".format(monthly_charges)
-
-        st.markdown(
-            textwrap.dedent(charges_card),
-            unsafe_allow_html=True
-        )
+            st.write(
+                "Estimated monthly charges based on "
+                "customer characteristics."
+            )
 
 
 # =========================================================
