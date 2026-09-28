@@ -44,6 +44,13 @@ st.markdown("""
 .subtitle {
     font-size: 17px;
     color: #64748b;
+    margin-bottom: 5px;
+}
+
+/* Developed by */
+.developed-by {
+    font-size: 15px;
+    color: #64748b;
     margin-bottom: 30px;
 }
 
@@ -55,7 +62,7 @@ st.markdown("""
     margin-bottom: 18px;
 }
 
-/* Make input labels clearly visible */
+/* Input labels */
 label {
     color: #17365d !important;
     font-weight: 600 !important;
@@ -75,7 +82,7 @@ label {
     margin-bottom: 20px;
 }
 
-/* Small heading inside result card */
+/* Result heading */
 .result-heading {
     font-size: 14px;
     font-weight: 700;
@@ -84,14 +91,14 @@ label {
     margin-bottom: 12px;
 }
 
-/* Stay result */
+/* Stay prediction */
 .stay-text {
     color: #008a4b;
     font-size: 25px;
     font-weight: 800;
 }
 
-/* Churn result */
+/* Churn prediction */
 .churn-text {
     color: #d93025;
     font-size: 25px;
@@ -105,14 +112,14 @@ label {
     font-weight: 800;
 }
 
-/* Probability text */
+/* Probability */
 .probability {
     font-size: 16px;
     color: #64748b;
     margin-top: 12px;
 }
 
-/* Button */
+/* Analyze button */
 div.stButton > button {
     width: 100%;
     background: linear-gradient(90deg, #4f46e5, #6366f1);
@@ -148,6 +155,11 @@ st.markdown(
 
 st.markdown(
     '<div class="subtitle">Customer churn prediction & monthly charges estimation</div>',
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    '<div class="developed-by">Developed by Group 10</div>',
     unsafe_allow_html=True
 )
 
@@ -265,30 +277,63 @@ with right:
         unsafe_allow_html=True
     )
 
-    if predict_button:
+    # =====================================================
+    # BEFORE BUTTON IS CLICKED
+    # =====================================================
 
-        # =================================================
+    if not predict_button:
+
+        st.info(
+            "Enter customer information and click **Analyze Customer** "
+            "to view predictions."
+        )
+
+    # =====================================================
+    # AFTER BUTTON IS CLICKED
+    # =====================================================
+
+    else:
+
+        # -------------------------------------------------
         # CONVERT INPUTS TO MODEL FORMAT
-        # =================================================
+        # -------------------------------------------------
 
-        # Senior Citizen
-        senior_citizen_value = 1 if senior_citizen == "Yes" else 0
+        senior_citizen_value = (
+            1 if senior_citizen == "Yes" else 0
+        )
 
-        # Gender
-        gender_value = 1 if gender == "Male" else 0
+        gender_value = (
+            1 if gender == "Male" else 0
+        )
 
-        # Yes / No variables
-        partner_value = 1 if partner == "Yes" else 0
-        dependents_value = 1 if dependents == "Yes" else 0
-        phone_service_value = 1 if phone_service == "Yes" else 0
-        paperless_billing_value = 1 if paperless_billing == "Yes" else 0
-        streaming_tv_value = 1 if streaming_tv == "Yes" else 0
-        streaming_movies_value = 1 if streaming_movies == "Yes" else 0
+        partner_value = (
+            1 if partner == "Yes" else 0
+        )
+
+        dependents_value = (
+            1 if dependents == "Yes" else 0
+        )
+
+        phone_service_value = (
+            1 if phone_service == "Yes" else 0
+        )
+
+        paperless_billing_value = (
+            1 if paperless_billing == "Yes" else 0
+        )
+
+        streaming_tv_value = (
+            1 if streaming_tv == "Yes" else 0
+        )
+
+        streaming_movies_value = (
+            1 if streaming_movies == "Yes" else 0
+        )
 
 
-        # =================================================
+        # -------------------------------------------------
         # CREATE INPUT DATAFRAME
-        # =================================================
+        # -------------------------------------------------
 
         input_data = pd.DataFrame([{
 
@@ -319,9 +364,13 @@ with right:
         # LOGISTIC REGRESSION - CHURN PREDICTION
         # =================================================
 
-        churn_prediction = logistic_model.predict(input_data)
+        churn_prediction = logistic_model.predict(
+            input_data
+        )
 
-        churn_probability = logistic_model.predict_proba(input_data)
+        churn_probability = logistic_model.predict_proba(
+            input_data
+        )
 
 
         # =================================================
@@ -359,7 +408,6 @@ with right:
                 churn_probability[0][1]
             ), unsafe_allow_html=True)
 
-
         else:
 
             st.markdown("""
@@ -396,7 +444,9 @@ with right:
         # LINEAR REGRESSION - MONTHLY CHARGES
         # =================================================
 
-        monthly_charges = linear_model.predict(input_data)[0]
+        monthly_charges = linear_model.predict(
+            input_data
+        )[0]
 
 
         # =================================================
@@ -427,38 +477,12 @@ with right:
         ), unsafe_allow_html=True)
 
 
-    else:
-
-        # Initial message before prediction
-
-        st.markdown("""
-        <div class="result-card">
-
-            <div class="result-heading">
-                PREDICTION RESULTS
-            </div>
-
-            <div style="
-                font-size:20px;
-                color:#64748b;
-                line-height:1.5;
-            ">
-
-                Enter customer information and click
-                <b>Analyze Customer</b> to view predictions.
-
-            </div>
-
-        </div>
-        """, unsafe_allow_html=True)
-
-
 # =========================================================
 # FOOTER
 # =========================================================
 
 st.markdown("""
 <div class="footer">
-    <b>Managed by Group 10</b>
+    <b>Developed by Group 10</b>
 </div>
 """, unsafe_allow_html=True)
