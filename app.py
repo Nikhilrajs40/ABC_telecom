@@ -17,6 +17,37 @@ st.set_page_config(
 
 
 # =========================================================
+# SAMPLE TEXT PAGE
+# =========================================================
+
+if st.query_params.get("sample") == "1":
+
+    st.title("AI Natural Language Example")
+
+    st.write(
+        "Copy-paste this into the **AI Natural Language** box:"
+    )
+
+    st.markdown("""
+The customer is a male and is not a senior citizen.
+
+He has been with the company for 1 month.
+
+He does not have a partner or dependents.
+
+He does not have phone service.
+
+He uses paperless billing.
+
+He uses streaming TV and streaming movies.
+
+His total charges so far are $29.85.
+""")
+
+    st.stop()
+
+
+# =========================================================
 # LOAD MODELS
 # =========================================================
 
@@ -1223,23 +1254,11 @@ His total charges so far are $1500."""
 # FOOTER
 # =========================================================
 
-import urllib.parse
-
-sample_text = """The customer is a male and is not a senior citizen.
-He has been with the company for 1 month.
-He does not have a partner or dependents.
-He does not have phone service.
-He uses paperless billing.
-He uses streaming TV and streaming movies.
-His total charges so far are $29.85."""
-
-encoded_text = urllib.parse.quote(sample_text)
-
 st.markdown(
-    f"""
+    """
     <div class="footer">
         <a
-            href="data:text/plain;charset=utf-8,{encoded_text}"
+            href="https://abctelecomindustry.streamlit.app/?sample=1"
             target="_blank"
             style="
                 color:#64748b;
