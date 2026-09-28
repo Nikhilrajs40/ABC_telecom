@@ -28,7 +28,6 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-/* Background */
 .stApp {
     background-color: #f5f7fb;
 }
@@ -50,6 +49,13 @@ st.markdown("""
 
 /* Developed by */
 .developed-by {
+    font-size: 15px;
+    color: #64748b !important;
+    margin-bottom: 12px;
+}
+
+/* User instruction */
+.instruction {
     font-size: 15px;
     color: #64748b !important;
     margin-bottom: 30px;
@@ -74,7 +80,7 @@ label {
     font-weight: 600 !important;
 }
 
-/* Normal Streamlit text */
+/* Normal text */
 .stMarkdown p,
 .stMarkdown span,
 [data-testid="stMarkdownContainer"] p,
@@ -133,6 +139,13 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+st.markdown(
+    '<div class="instruction">'
+    'ⓘ Hover over the information icons for help with each field.'
+    '</div>',
+    unsafe_allow_html=True
+)
+
 
 # =========================================================
 # TWO COLUMN LAYOUT
@@ -152,102 +165,123 @@ with left:
         unsafe_allow_html=True
     )
 
+
     # -----------------------------------------------------
-    # Senior Citizen + Gender
+    # SENIOR CITIZEN + GENDER
     # -----------------------------------------------------
 
     col1, col2 = st.columns(2)
 
     with col1:
+
         senior_citizen = st.selectbox(
-            "Senior Citizen",
-            ["No", "Yes"]
+            "Senior Citizen ⓘ",
+            ["No", "Yes"],
+            help="Select Yes if the customer is a senior citizen."
         )
 
     with col2:
+
         gender = st.selectbox(
-            "Gender",
-            ["Male", "Female"]
+            "Gender ⓘ",
+            ["Male", "Female"],
+            help="Select the customer's gender."
         )
 
 
     # -----------------------------------------------------
-    # Tenure + Total Charges
+    # TENURE + TOTAL CHARGES
     # -----------------------------------------------------
 
     col1, col2 = st.columns(2)
 
     with col1:
+
         tenure = st.number_input(
-            "Tenure (months)",
+            "Tenure (months) ⓘ",
             min_value=0,
             max_value=100,
-            value=24
+            value=24,
+            help="Number of months the customer has been with the company."
         )
 
     with col2:
+
         total_charges = st.number_input(
-            "Total Charges ($)",
+            "Total Charges ($) ⓘ",
             min_value=0.0,
             value=1500.0,
-            step=100.0
+            step=100.0,
+            help="Total amount charged to the customer so far."
         )
 
 
     # -----------------------------------------------------
-    # Partner + Dependents
+    # PARTNER + DEPENDENTS
     # -----------------------------------------------------
 
     col1, col2 = st.columns(2)
 
     with col1:
+
         partner = st.selectbox(
-            "Partner",
-            ["Yes", "No"]
+            "Partner ⓘ",
+            ["Yes", "No"],
+            help="Select Yes if the customer has a partner or spouse."
         )
 
     with col2:
+
         dependents = st.selectbox(
-            "Dependents",
-            ["Yes", "No"]
+            "Dependents ⓘ",
+            ["Yes", "No"],
+            help="Select Yes if the customer has dependents, such as children or other financially dependent people."
         )
 
 
     # -----------------------------------------------------
-    # Phone Service + Paperless Billing
+    # PHONE SERVICE + PAPERLESS BILLING
     # -----------------------------------------------------
 
     col1, col2 = st.columns(2)
 
     with col1:
+
         phone_service = st.selectbox(
-            "Phone Service",
-            ["Yes", "No"]
+            "Phone Service ⓘ",
+            ["Yes", "No"],
+            help="Select Yes if the customer has a phone service subscription."
         )
 
     with col2:
+
         paperless_billing = st.selectbox(
-            "Paperless Billing",
-            ["Yes", "No"]
+            "Paperless Billing ⓘ",
+            ["Yes", "No"],
+            help="Select Yes if the customer uses paperless billing instead of paper bills."
         )
 
 
     # -----------------------------------------------------
-    # Streaming TV + Streaming Movies
+    # STREAMING TV + STREAMING MOVIES
     # -----------------------------------------------------
 
     col1, col2 = st.columns(2)
 
     with col1:
+
         streaming_tv = st.selectbox(
-            "Streaming TV",
-            ["Yes", "No"]
+            "Streaming TV ⓘ",
+            ["Yes", "No"],
+            help="Select Yes if the customer subscribes to a streaming TV service."
         )
 
     with col2:
+
         streaming_movies = st.selectbox(
-            "Streaming Movies",
-            ["Yes", "No"]
+            "Streaming Movies ⓘ",
+            ["Yes", "No"],
+            help="Select Yes if the customer subscribes to a streaming movie service."
         )
 
 
@@ -399,7 +433,6 @@ with right:
                 )
 
 
-            # Probability of staying
             st.markdown(
                 f'<p style="color:#17365d !important; '
                 f'font-size:16px;">'
@@ -410,7 +443,6 @@ with right:
             )
 
 
-            # Probability of churning
             st.markdown(
                 f'<p style="color:#17365d !important; '
                 f'font-size:16px;">'
